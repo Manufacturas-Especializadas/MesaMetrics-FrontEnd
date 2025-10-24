@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navbar } from "./components/layout/Navbar/Navbar";
 import { Sidebar } from "./components/layout/Sidebar/Sidebar";
 import { BrowserRouter } from "react-router-dom";
-import { MyRoutes } from "./components/routes/Routes";
+import { MyRoutes } from "./routes/Routes";
 
 export const App = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
