@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import type React from "react";
 import { useLocation } from "react-router-dom";
+import Logo from "../../../assets/logomesa.png";
 
 // const HeaderButton: React.FC<{ children: React.ReactNode; icon: React.ElementType }> = ({
 //     children,
@@ -50,9 +51,16 @@ export const Navbar: React.FC<Props> = ({ toggleSidebar }) => {
                     <Menu size={24} className="text-text" />
                 </button>
 
-                <span className="text-2xl font-bold text-primary">
-                    MESA METRICS
-                </span>
+                <div className="flex gap-2 items-center justify-center ">
+                    <img
+                        src={Logo}
+                        alt="logomesa"
+                        className="w-20"
+                    />
+                    <span className="text-2xl font-bold text-primary">
+                        METRICS
+                    </span>
+                </div>
 
                 <div className="hidden lg:flex items-center gap-4">
                     <span className="h-6 w-px bg-disabled" aria-hidden="true" />
