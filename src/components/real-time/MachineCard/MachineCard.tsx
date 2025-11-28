@@ -48,9 +48,9 @@ export const MachineCard: React.FC<Props> = ({
                 <StatDisplay value={stopTime} label="Tiempo en par" />
                 <StatDisplay value={stops} label="Paros" />
 
-                <div className="bg-white">
-                    <TimelineBar />
-                </div>
+            </div>
+            <div className="bg-white">
+                <TimelineBar />
             </div>
         </article>
     );
