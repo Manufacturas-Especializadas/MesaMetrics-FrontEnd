@@ -1,4 +1,5 @@
 import { MachineCard } from "../../components/real-time/MachineCard/MachineCard";
+import { StatusMetricCard } from "../../components/real-time/StatusMetricCard/StatusMetricCard";
 
 const machine1Data = {
     machineName: "LINEA 1 CORTADORA CUT OFF 124",
@@ -25,9 +26,18 @@ const machine2Data = {
 export const RealTimeIndex = () => {
     return (
         <div className="flex flex-col gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <StatusMetricCard count={6} label="Máquinas totals" variant="info" />
+                <StatusMetricCard count={0} label="Produciendo" variant="success" />
+                <StatusMetricCard count={2} label="Detenido" variant="warning" />
+                <StatusMetricCard count={0} label="Alerta" variant="danger" />
+                <StatusMetricCard count={4} label="Sin Datos" variant="gray" />
+                <StatusMetricCard count={0} label="Sin Turno" variant="primary" />
+            </div>
+
             <MachineCard {...machine1Data} isActive={true} />
 
-            <MachineCard {...machine2Data} />
+            <MachineCard {...machine2Data} isActive={true} />
         </div>
     );
 };
