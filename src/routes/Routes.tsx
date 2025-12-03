@@ -5,11 +5,15 @@ import { StopsIndex } from "../pages/Stops/StopsIndex";
 import { DataAnalyticsIndex } from "../pages/DataAnalytics/DataAnalyticsIndex";
 import { ReportsIndex } from "../pages/Reports/ReportsIndex";
 import { ExportDataIndex } from "../pages/ExportData/ExportDataIndex";
+import { RealTimeForm } from "../components/Forms/RealTimeForm/RealTimeForm";
 
 export const MyRoutes = () => {
     return (
         <Routes>
+            {/* Real Time */}
             <Route path="/tiempo-real" element={<RealTimeIndex />} />
+            <Route path="/nueva-maquina" element={<RealTimeForm />} />
+
             <Route path="/resumen-general" element={<GeneralSummaryIndex />} />
             <Route path="/paradas" element={<StopsIndex />} />
             <Route path="/analitica-de-datos" element={<DataAnalyticsIndex />} />
