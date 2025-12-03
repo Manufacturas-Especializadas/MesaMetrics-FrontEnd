@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/Button/Button";
 import { MachineCard } from "../../components/real-time/MachineCard/MachineCard";
 import { StatusMetricCard } from "../../components/real-time/StatusMetricCard/StatusMetricCard";
 
@@ -24,6 +26,8 @@ const machine2Data = {
 };
 
 export const RealTimeIndex = () => {
+    const navigate = useNavigate();
+
     return (
         <div className="flex flex-col gap-6">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -33,6 +37,25 @@ export const RealTimeIndex = () => {
                 <StatusMetricCard count={0} label="Alerta" variant="danger" />
                 <StatusMetricCard count={4} label="Sin Datos" variant="gray" />
                 <StatusMetricCard count={0} label="Sin Turno" variant="primary" />
+            </div>
+
+            <div className="flex justify-between">
+                <div className="flex gap-2">
+                    <Button variant="light">
+                        Ordenar por
+                    </Button>
+                    <Button variant="light">
+                        Filtrar
+                    </Button>
+                </div>
+                <div className="flex gap-2">
+                    <Button variant="light">
+                        Turnos hístoricos
+                    </Button>
+                    <Button variant="light" onClick={() => navigate("/nueva-maquina")}>
+                        Nueva maquina
+                    </Button>
+                </div>
             </div>
 
             <MachineCard {...machine1Data} isActive={true} />
