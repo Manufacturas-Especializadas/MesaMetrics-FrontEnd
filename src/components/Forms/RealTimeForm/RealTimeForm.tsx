@@ -7,10 +7,12 @@ import { useTags } from "../../../hooks/useTags";
 import { useShifts } from "../../../hooks/useShifts";
 import { TagMultiSelect } from "../../Inputs/TagMultiSelect";
 import { useNavigate } from "react-router-dom";
+import { useLines } from "../../../hooks/useLines";
 
 export const RealTimeForm = () => {
     const { shifts, loading: shiftsLoading } = useShifts();
     const { tags, loading: tagsLoading } = useTags();
+    const { lines, loading: linesLoading } = useLines();
     const navigate = useNavigate();
 
     const {
@@ -30,6 +32,11 @@ export const RealTimeForm = () => {
     const tagOptions = tags.map(tag => ({
         value: tag.id,
         label: tag.tagsName
+    }));
+
+    const linesOptions = lines.map(line => ({
+        value: line.id,
+        label: line.linesName
     }));
 
     const handleCancel = () => {
@@ -138,6 +145,21 @@ export const RealTimeForm = () => {
                                         required
                                         disabled={isLoading || shiftsLoading}
                                         error={formData.shiftId === 0 ? "Seleccione un turno" : undefined}
+                                    />
+                                </div>
+
+                                <div>
+                                    <SelectField
+                                        label="Linea"
+                                        value={formData.lineId || ""}
+                                        onChange={(e) => handleChange("lineId", parseInt(e.target.value) || 0)}
+                                        options={[
+                                            { value: "", label: "Seleccione una linea" },
+                                            ...linesOptions
+                                        ]}
+                                        required
+                                        disabled={isLoading || linesLoading}
+                                        error={formData.lineId === 0 ? "Seleccione una linea" : undefined}
                                     />
                                 </div>
 

@@ -18,6 +18,7 @@ const initialFormData: RealTime = {
     shiftId: 0,
     startTime: "",
     endTime: "",
+    lineId: 0,
     tagsId: []
 };
 
@@ -60,6 +61,9 @@ export const useRealTimeForm = (onSuccess?: () => void): UseRealTimeFormReturn =
             errors.push("Debe seleccionar un turno");
         }
 
+        if (formData.lineId === 0) {
+            errors.push("Debe seleccionar una linea");
+        }
 
         if (!formData.startTime) {
             errors.push("La hora de inicio es requerida");

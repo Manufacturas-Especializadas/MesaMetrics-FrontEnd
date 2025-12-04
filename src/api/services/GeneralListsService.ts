@@ -12,6 +12,11 @@ export interface Shifts {
     shiftName: string;
 };
 
+export interface Lines {
+    id: number;
+    linesName: string;
+};
+
 export interface GeneralListsResponse<T> {
     success: boolean;
     message: string;
@@ -21,6 +26,7 @@ export interface GeneralListsResponse<T> {
 class GeneralListsService {
     private tagsEndpoint = API_CONFIG.endpoints.generalLists.tagsList;
     private shiftsEndpoit = API_CONFIG.endpoints.generalLists.shiftsList;
+    private linesEndpoint = API_CONFIG.endpoints.generalLists.linesList;
 
     async getTags(): Promise<GeneralListsResponse<Tags[]>> {
         return apiClient.get<GeneralListsResponse<Tags[]>>(this.tagsEndpoint);
@@ -28,6 +34,10 @@ class GeneralListsService {
 
     async getShifts(): Promise<GeneralListsResponse<Shifts>> {
         return apiClient.get<GeneralListsResponse<Shifts>>(this.shiftsEndpoit);
+    };
+
+    async getLines(): Promise<GeneralListsResponse<Lines[]>> {
+        return apiClient.get<GeneralListsResponse<Lines[]>>(this.linesEndpoint);
     };
 };
 

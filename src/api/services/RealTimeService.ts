@@ -6,6 +6,7 @@ export interface RealTime {
     shiftId: number;
     startTime: string;
     endTime: string;
+    lineId: number;
     tagsId: number[];
 };
 
