@@ -1,57 +1,103 @@
 import type React from "react";
-import { MachineStatusBadge, type MachineStatus } from "../MachineStatusBadge/MachineStatusBadge";
+import { useMachineMetrics } from "@/hooks/useMachineMetrics";
 import { StatDisplay } from "../StatDisplay/StatDisplay";
 import { TimelineBar } from "../TimelineBar/TimelineBar";
 
-interface Props {
-    machineName: string;
-    shift: string;
-    status: MachineStatus;
-    statusDuration: string;
-    availability: string;
-    productionTime: string;
-    stopTime: string;
-    stops: string;
-    isActive?: boolean;
+const CARD_STYLES = {
+    produccion: {
+        container: "border-green-200 shadow-green-100",
+        header: "bg-green-50 text-green-900",
+        icon: "bg-green-500 animate-pulse",
+        badge: "bg-green-100 text-green-700 border-green-200",
+        text: "text-gray-800",
+        opacity: "opacity-100"
+    },
+    detenido: {
+        container: "border-red-200 shadow-red-100",
+        header: "bg-red-50 text-red-900",
+        icon: "bg-red-500",
+        badge: "bg-red-100 text-red-700 border-red-200",
+        text: "text-gray-800",
+        opacity: "opacity-100"
+    },
+    offline: {
+        container: "border-gray-200 bg-gray-50",
+        header: "bg-gray-100 text-gray-400",
+        icon: "bg-gray-300",
+        badge: "bg-gray-200 text-gray-400 border-gray-300",
+        text: "text-gray-400",
+        opacity: "opacity-60 grayscale"
+    }
 };
 
-export const MachineCard: React.FC<Props> = ({
-    machineName,
-    shift,
-    status,
-    statusDuration,
-    availability,
-    productionTime,
-    stopTime,
-    stops,
-    isActive = false,
-}) => {
-    const headerBg = isActive ? "bg-primary-50" : "bg-background";
+interface Props {
+    realTimeId: number;
+}
+
+export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
+    const { metrics, loading, error } = useMachineMetrics(realTimeId);
+
+    if (loading) return <MachineCardSkeleton />;
+
+    if (error) {
+        return (
+            <div className="flex flex-col items-center justify-center h-56 rounded-xl border border-red-200 bg-red-50 p-4 text-center">
+                <p className="text-red-500 font-semibold text-sm">Error de conexión</p>
+                <p className="text-xs text-red-400 mt-1">ID: {realTimeId}</p>
+            </div>
+        );
+    }
+
+    const statusKey = (metrics?.status as keyof typeof CARD_STYLES) || "offline";
+    const styles = CARD_STYLES[statusKey] || CARD_STYLES.offline;
 
     return (
-        <article className="flex flex-col rounded-xl border border-disabled shadow-lg bg-background overflow-hidden">
-            <header className={`flex flex-col sm:flex-row items-center justify-between gap-3 p-4 ${headerBg}`}>
-                <div className="flex items-center gap-3">
-                    <h3 className="text-xl font-bold text-text">
-                        {machineName}
-                    </h3>
-                    <span className="rounded-full bg-gray-200 px-3 py-0.5 text-sm font-medium text-text/80">
-                        {shift}
+        <article className={`flex flex-col rounded-xl border shadow-sm overflow-hidden transition-all duration-500 ${styles.container} ${styles.opacity}`}>
+            <header className={`flex flex-col sm:flex-row items-center justify-between gap-3 p-4 transition-colors duration-500 ${styles.header}`}>
+                <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <div className={`h-3 w-3 rounded-full shrink-0 ${styles.icon}`} />
+
+                    <div className="flex flex-col">
+                        <h3 className={`text-lg font-bold leading-tight ${styles.text} line-clamp-1`}>
+                            {metrics?.machineName || "Cargando..."}
+                        </h3>
+                        <span className="text-xs font-medium opacity-80 uppercase tracking-wider">
+                            {metrics?.shift || "--"}
+                        </span>
+                    </div>
+                </div>
+
+                <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase border whitespace-nowrap ${styles.badge}`}>
+                    {statusKey === 'offline' ? 'SIN CONEXIÓN' : statusKey}
+                    <span className="ml-2 font-mono font-normal opacity-80 border-l pl-2 border-current">
+                        {metrics?.statusDuration || "0m"}
                     </span>
                 </div>
-                <MachineStatusBadge status={status} duration={statusDuration} />
             </header>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-disabled bg-white">
-                <StatDisplay value={availability} label="Disponibilidad" />
-                <StatDisplay value={productionTime} label="Tiempo producción" />
-                <StatDisplay value={stopTime} label="Tiempo en par" />
-                <StatDisplay value={stops} label="Paros" />
-
+            <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-100 bg-white py-3">
+                <StatDisplay value={metrics?.availability} label="Disponibilidad" />
+                <StatDisplay value={metrics?.productionTime} label="Tiempo Prod." />
+                <StatDisplay value={metrics?.stopTime} label="Tiempo Paro" />
+                <StatDisplay value={metrics?.stops} label="Paros" />
             </div>
-            <div className="bg-white">
+
+            <div className="bg-white px-4 pb-4 pt-2">
                 <TimelineBar />
             </div>
         </article>
     );
 };
+
+const MachineCardSkeleton = () => (
+    <div className="h-60 rounded-xl border border-gray-100 bg-white p-4 animate-pulse flex flex-col gap-4">
+        <div className="h-12 bg-gray-100 rounded-lg w-full mb-2"></div>
+        <div className="grid grid-cols-4 gap-2 flex-1">
+            <div className="bg-gray-50 rounded"></div>
+            <div className="bg-gray-50 rounded"></div>
+            <div className="bg-gray-50 rounded"></div>
+            <div className="bg-gray-50 rounded"></div>
+        </div>
+        <div className="h-8 bg-gray-100 rounded w-full"></div>
+    </div>
+);
