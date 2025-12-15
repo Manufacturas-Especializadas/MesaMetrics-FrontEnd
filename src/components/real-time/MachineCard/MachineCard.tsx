@@ -2,6 +2,7 @@ import type React from "react";
 import { useMachineMetrics } from "@/hooks/useMachineMetrics";
 import { StatDisplay } from "../StatDisplay/StatDisplay";
 import { TimelineBar } from "../TimelineBar/TimelineBar";
+import { MessageSquareWarning, Settings } from "lucide-react";
 
 const CARD_STYLES = {
     produccion: {
@@ -84,6 +85,27 @@ export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
 
             <div className="bg-white px-4 pb-4 pt-2">
                 <TimelineBar />
+            </div>
+
+            <div className="grid grid-cols-5 md:grid-cols-5">
+                <div className="flex justify-center mb-3 w-full">
+                    <button
+                        className="flex items-center justify-center p-1.5 
+                        gap-2 rounded-sm text-sm hover:cursor-pointer"
+                    >
+                        <MessageSquareWarning size={15} />
+                        Anotar paradas
+                    </button>
+                </div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div className="">
+                    <button className="bg-gray-100 px-1 py-0.5 ml-2.5 rounded-md 
+                        hover:cursor-pointer">
+                        <Settings />
+                    </button>
+                </div>
             </div>
         </article>
     );
