@@ -14,10 +14,10 @@ const CARD_STYLES = {
         opacity: "opacity-100"
     },
     detenido: {
-        container: "border-red-200 shadow-red-100",
-        header: "bg-red-50 text-red-900",
-        icon: "bg-red-500",
-        badge: "bg-red-100 text-red-700 border-red-200",
+        container: "border-orange-200 shadow-orange-100",
+        header: "bg-orange-50 text-red-900",
+        icon: "bg-orage-500",
+        badge: "bg-orange-100 text-orange-700 border-orange-200",
         text: "text-gray-800",
         opacity: "opacity-100"
     },
