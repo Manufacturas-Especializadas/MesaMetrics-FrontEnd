@@ -87,7 +87,7 @@ export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
                 <TimelineBar />
             </div>
 
-            <div className="grid grid-cols-5 md:grid-cols-5">
+            <div className="grid grid-cols-5 md:grid-cols-5 bg-white">
                 <div className="flex justify-center mb-3 w-full">
                     <button
                         className="flex items-center justify-center p-1.5 
