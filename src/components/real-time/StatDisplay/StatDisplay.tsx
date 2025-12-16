@@ -1,7 +1,7 @@
 import type React from "react";
 
 interface Props {
-    value: string;
+    value?: string;
     label: string;
 };
 
