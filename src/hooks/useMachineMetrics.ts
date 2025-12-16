@@ -44,7 +44,6 @@ export const useMachineMetrics = (realTimeId: number) => {
             try {
                 if (connection.state === HubConnectionState.Disconnected) {
                     await connection.start();
-                    console.log(`✅ SignalR Conectado: Máquina ${realTimeId}`);
 
                     if (isMounted && (connection.state as HubConnectionState) === HubConnectionState.Connected) {
                         await connection.invoke("JoinGroup", realTimeId.toString());
@@ -60,7 +59,6 @@ export const useMachineMetrics = (realTimeId: number) => {
         startConnection();
 
         connection.on("ReceiveMachineMetrics", (updatedMetrics: MachineMetrics) => {
-            console.log("⚡ Dato recibido en tiempo real:", updatedMetrics);
             if (isMounted) {
                 setMetrics(updatedMetrics);
             }
