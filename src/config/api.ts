@@ -6,9 +6,14 @@ if (!API_BASE_URL) {
 
 export const API_CONFIG = {
     baseUrl: API_BASE_URL,
+    hubUrl: `${API_BASE_URL.replace("/api", "")}/machineHub`,
     endpoints: {
         realTime: {
             create: "/api/RealTime/RegisterRealTime"
+        },
+        telemetry: {
+            currentMetrics: (id: number) => `/api/Telemetry/CurrentMetrics/${id}`,
+            activeSessions: "/api/Telemetry/GetActiveSessions"
         },
         generalLists: {
             tagsList: "/api/GeneralList/GetTags",
