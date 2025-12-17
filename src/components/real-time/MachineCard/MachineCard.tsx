@@ -84,7 +84,7 @@ export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
             </div>
 
             <div className="bg-white px-4 pb-4 pt-2">
-                <TimelineBar />
+                <TimelineBar segments={metrics?.timeline} />
             </div>
 
             <div className="grid grid-cols-5 md:grid-cols-5 bg-white">
