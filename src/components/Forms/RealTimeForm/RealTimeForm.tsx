@@ -2,12 +2,12 @@ import { Toaster } from "react-hot-toast";
 import { Button } from "../../Button/Button";
 import InputField from "../../Inputs/InputField";
 import SelectField from "../../Inputs/SelectField";
-import { useRealTimeForm } from "../../../hooks/useRealTimeForm";
-import { useTags } from "../../../hooks/useTags";
-import { useShifts } from "../../../hooks/useShifts";
+import { useRealTimeForm } from "@/hooks/useRealTimeForm";
+import { useTags } from "@/hooks/useTags";
+import { useShifts } from "@/hooks/useShifts";
 import { TagMultiSelect } from "../../Inputs/TagMultiSelect";
 import { useNavigate } from "react-router-dom";
-import { useLines } from "../../../hooks/useLines";
+import { useLines } from "@/hooks/useLines";
 
 export const RealTimeForm = () => {
     const { shifts, loading: shiftsLoading } = useShifts();
