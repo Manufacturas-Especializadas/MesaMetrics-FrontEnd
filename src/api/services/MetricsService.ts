@@ -11,11 +11,29 @@ export interface MachineMetrics {
     productionTime: string;
     stopTime: string;
     stops: string;
+    timeline: TimelineSegment[];
+};
+
+export interface TimelineSegment {
+    status: "produccion" | "detenido" | "offline";
+    startTime: string;
+    endTime: string;
+    duration: string;
+};
+
+export interface DashboardStats {
+    produciendo: number;
+    detenido: number;
+    alerta: number;
+    sinDatos: number;
+    sinTurno: number;
+    total: number;
 };
 
 class MetricsService {
     private getCurrentMetricsEndpoint = API_CONFIG.endpoints.telemetry.currentMetrics;
     private getActiveSessionEndpoint = API_CONFIG.endpoints.telemetry.activeSessions;
+    private getDashboardStatsEndpoint = API_CONFIG.endpoints.telemetry.dashboardStats;
 
     async getCurrentMetrics(realTimeId: number): Promise<MachineMetrics> {
         const response = await apiClient.get<MachineMetrics>(this.getCurrentMetricsEndpoint(realTimeId))
@@ -29,6 +47,10 @@ class MetricsService {
 
     async getActiveSession(): Promise<number[]> {
         return await apiClient.get<number[]>(this.getActiveSessionEndpoint);
+    };
+
+    async getDashboardStats(): Promise<DashboardStats> {
+        return await apiClient.get<DashboardStats>(this.getDashboardStatsEndpoint);
     };
 };
 
