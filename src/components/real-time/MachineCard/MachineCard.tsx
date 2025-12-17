@@ -78,13 +78,13 @@ export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-100 bg-white py-3">
                 <StatDisplay value={metrics?.availability} label="Disponibilidad" />
-                <StatDisplay value={metrics?.productionTime} label="Tiempo Prod." />
-                <StatDisplay value={metrics?.stopTime} label="Tiempo Paro" />
+                <StatDisplay value={metrics?.productionTime} label="Tiempo Producción" />
+                <StatDisplay value={metrics?.stopTime} label="Tiempo en paro" />
                 <StatDisplay value={metrics?.stops} label="Paros" />
             </div>
 
             <div className="bg-white px-4 pb-4 pt-2">
-                <TimelineBar />
+                <TimelineBar segments={metrics?.timeline} />
             </div>
 
             <div className="grid grid-cols-5 md:grid-cols-5 bg-white">
