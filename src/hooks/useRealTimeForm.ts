@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { type RealTime, realTimeService } from "../api/services/RealTimeService";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ interface UseRealTimeFormReturn {
     handleSubmit: (e: React.FormEvent) => Promise<void>;
     resetForm: () => void;
     validateForm: () => boolean;
+    isEditing: boolean;
 }
 
 const initialFormData: RealTime = {
@@ -22,11 +23,38 @@ const initialFormData: RealTime = {
     tagsId: []
 };
 
-export const useRealTimeForm = (onSuccess?: () => void): UseRealTimeFormReturn => {
+export const useRealTimeForm = (onSuccess?: () => void, editId?: number): UseRealTimeFormReturn => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [formData, setFormData] = useState<RealTime>(initialFormData);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (editId) {
+            const loadData = async () => {
+                try {
+                    const response = await realTimeService.getById(editId);
+
+                    if (response.data) {
+                        setFormData({
+                            title: response.data.title,
+                            shiftId: response.data.shiftId,
+                            startTime: response.data.startTime,
+                            endTime: response.data.endTime,
+                            lineId: response.data.line,
+                            tagsId: response.data.tagsId || []
+                        });
+                    }
+                } catch (err: any) {
+                    toast.error("Error al cargar los datos del registro");
+                    navigate("/tiempo-real");
+                } finally {
+                    setLoading(false);
+                }
+            };
+            loadData();
+        };
+    }, [editId, navigate]);
 
     const handleChange = useCallback((field: keyof RealTime, value: any) => {
         setFormData(prev => {
@@ -52,34 +80,16 @@ export const useRealTimeForm = (onSuccess?: () => void): UseRealTimeFormReturn =
 
     const validateForm = useCallback((): boolean => {
         const errors: string[] = [];
-
-        if (!formData.title.trim()) {
-            errors.push("El título es requerido");
-        }
-
-        if (formData.shiftId === 0) {
-            errors.push("Debe seleccionar un turno");
-        }
-
-        if (formData.lineId === 0) {
-            errors.push("Debe seleccionar una linea");
-        }
-
-        if (!formData.startTime) {
-            errors.push("La hora de inicio es requerida");
-        }
-
-        if (!formData.endTime) {
-            errors.push("La hora de fin es requerida");
-        }
+        if (!formData.title.trim()) errors.push("El título es requerido");
+        if (formData.shiftId === 0) errors.push("Debe seleccionar un turno");
+        if (formData.lineId === 0) errors.push("Debe seleccionar una linea");
+        if (!formData.startTime) errors.push("La hora de inicio es requerida");
+        if (!formData.endTime) errors.push("La hora de fin es requerida");
 
         if (formData.startTime && formData.endTime) {
             const start = new Date(`2000-01-01T${formData.startTime}`);
             const end = new Date(`2000-01-01T${formData.endTime}`);
-
-            if (end <= start) {
-                errors.push("La hora de fin debe ser mayor a la hora de inicio");
-            }
+            if (end <= start) errors.push("La hora de fin debe ser mayor a la hora de inicio");
         }
 
         if (errors.length > 0) {
@@ -87,59 +97,58 @@ export const useRealTimeForm = (onSuccess?: () => void): UseRealTimeFormReturn =
             toast.error(errors.join("\n"));
             return false;
         }
-
         return true;
     }, [formData]);
 
     const handleSubmit = useCallback(async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         setLoading(true);
         setError(null);
 
         try {
-            const loadingToast = toast.loading("Registrando...");
+            const actionText = editId ? "Actualizando..." : "Registrando...";
+            const loadingToast = toast.loading(actionText);
 
             const payload = {
                 ...formData,
                 tagIds: Array.isArray(formData.tagsId) ? formData.tagsId : []
             };
 
-            const response = await realTimeService.registerRealTime(payload);
+            let response;
+
+            if (editId) {
+                response = await realTimeService.updatedRealTime(payload, editId);
+            } else {
+                response = await realTimeService.registerRealTime(payload);
+            }
 
             toast.dismiss(loadingToast);
 
             if (response.success) {
-                toast.success(response.message || "Registro exitoso");
-                resetForm();
+                toast.success(response.message || (editId ? "Actualización exitosa" : "Registro exitoso"));
+
+                if (!editId) resetForm();
+
                 if (onSuccess) onSuccess();
+
                 setTimeout(() => {
                     navigate("/tiempo-real");
-                }, 2500);
+                }, 1500);
             } else {
-                toast.error(response.message || "Error en el registro");
+                toast.error(response.message || "Error en la operación");
                 setError(response.message);
             }
         } catch (err: any) {
-            const errorMessage = err?.response?.data?.message ||
-                err?.message ||
-                "Error de conexión con el servidor";
+            const errorMessage = err?.response?.data?.message || err?.message || "Error de conexión";
             toast.error(errorMessage);
             setError(errorMessage);
-            console.error("Error en useRealTimeForm:", err);
-
-            if (err?.response) {
-                console.error("Respuesta del servidor:", err.response.data);
-                console.error("Status:", err.response.status);
-            }
         } finally {
-            setLoading(false);
+            setLoading(true);
         }
-    }, [formData, validateForm, onSuccess]);
+    }, [formData, validateForm, onSuccess, editId, navigate]);
 
     const resetForm = useCallback(() => {
         setFormData(initialFormData);
@@ -154,6 +163,7 @@ export const useRealTimeForm = (onSuccess?: () => void): UseRealTimeFormReturn =
         handleChange,
         handleSubmit,
         resetForm,
-        validateForm
+        validateForm,
+        isEditing: !!editId
     };
 };

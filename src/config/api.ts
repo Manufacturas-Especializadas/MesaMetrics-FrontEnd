@@ -9,7 +9,9 @@ export const API_CONFIG = {
     hubUrl: `${API_BASE_URL.replace("/api", "")}/machineHub`,
     endpoints: {
         realTime: {
-            create: "/api/RealTime/RegisterRealTime"
+            create: "/api/RealTime/RegisterRealTime",
+            update: "/api/RealTime/UpdateRealTime/",
+            getById: "/api/RealTime/GetRealTimeById/"
         },
         telemetry: {
             currentMetrics: (id: number) => `/api/Telemetry/CurrentMetrics/${id}`,
