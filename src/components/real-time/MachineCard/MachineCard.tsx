@@ -3,6 +3,7 @@ import { useMachineMetrics } from "@/hooks/useMachineMetrics";
 import { StatDisplay } from "../StatDisplay/StatDisplay";
 import { TimelineBar } from "../TimelineBar/TimelineBar";
 import { MessageSquareWarning, Settings } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CARD_STYLES = {
     produccion: {
@@ -37,6 +38,7 @@ interface Props {
 
 export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
     const { metrics, loading, error } = useMachineMetrics(realTimeId);
+    const navigate = useNavigate();
 
     if (loading) return <MachineCardSkeleton />;
 
@@ -68,7 +70,7 @@ export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
                     </div>
                 </div>
 
-                <div className={`px-3 py-1 rounded-full text-xs font-bold uppercase border whitespace-nowrap ${styles.badge}`}>
+                <div className={`px-4 py-2 rounded-full text-md font-bold uppercase border whitespace-nowrap ${styles.badge}`}>
                     {statusKey === 'offline' ? 'SIN CONEXIÓN' : statusKey}
                     <span className="ml-2 font-mono font-normal opacity-80 border-l pl-2 border-current">
                         {metrics?.statusDuration || "0m"}
@@ -101,7 +103,9 @@ export const MachineCard: React.FC<Props> = ({ realTimeId }) => {
                 <div></div>
                 <div></div>
                 <div className="">
-                    <button className="bg-gray-100 px-1 py-0.5 ml-2.5 rounded-md 
+                    <button
+                        onClick={() => navigate(`/editar-maquina/${realTimeId}`)}
+                        className="bg-gray-100 px-1 py-0.5 ml-2.5 rounded-md 
                         hover:cursor-pointer">
                         <Settings />
                     </button>

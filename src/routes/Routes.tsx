@@ -13,6 +13,7 @@ export const MyRoutes = () => {
             {/* Real Time */}
             <Route path="/tiempo-real" element={<RealTimeIndex />} />
             <Route path="/nueva-maquina" element={<RealTimeForm />} />
+            <Route path="/editar-maquina/:id" element={<RealTimeForm />} />
 
             <Route path="/resumen-general" element={<GeneralSummaryIndex />} />
             <Route path="/paradas" element={<StopsIndex />} />

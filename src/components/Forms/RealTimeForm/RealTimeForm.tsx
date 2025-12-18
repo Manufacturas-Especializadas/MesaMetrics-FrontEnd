@@ -2,17 +2,22 @@ import { Toaster } from "react-hot-toast";
 import { Button } from "../../Button/Button";
 import InputField from "../../Inputs/InputField";
 import SelectField from "../../Inputs/SelectField";
-import { useRealTimeForm } from "../../../hooks/useRealTimeForm";
-import { useTags } from "../../../hooks/useTags";
-import { useShifts } from "../../../hooks/useShifts";
+import { useRealTimeForm } from "@/hooks/useRealTimeForm";
+import { useTags } from "@/hooks/useTags";
+import { useShifts } from "@/hooks/useShifts";
 import { TagMultiSelect } from "../../Inputs/TagMultiSelect";
-import { useNavigate } from "react-router-dom";
-import { useLines } from "../../../hooks/useLines";
+import { useNavigate, useParams } from "react-router-dom";
+import { useLines } from "@/hooks/useLines";
+import { useMachineIds } from "@/hooks/useMachineIds";
 
 export const RealTimeForm = () => {
+    const { id } = useParams();
+    const editId = id ? parseInt(id) : undefined;
+
     const { shifts, loading: shiftsLoading } = useShifts();
     const { tags, loading: tagsLoading } = useTags();
     const { lines, loading: linesLoading } = useLines();
+    const { machines, loading: machinesLoading } = useMachineIds();
     const navigate = useNavigate();
 
     const {
@@ -21,7 +26,8 @@ export const RealTimeForm = () => {
         formData,
         handleChange,
         handleSubmit,
-        resetForm
+        resetForm,
+        isEditing
     } = useRealTimeForm();
 
     const shiftOptions = shifts.map(shift => ({
@@ -37,6 +43,11 @@ export const RealTimeForm = () => {
     const linesOptions = lines.map(line => ({
         value: line.id,
         label: line.linesName
+    }));
+
+    const machinesOptions = machines.map(mach => ({
+        value: mach.id,
+        label: mach.machine
     }));
 
     const handleCancel = () => {
@@ -94,10 +105,10 @@ export const RealTimeForm = () => {
                 <div className="max-w-lg mx-auto">
                     <div className="text-center mb-8">
                         <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                            Registro en Tiempo Real
+                            {isEditing ? `Editar registro #${editId}` : "Registro en tiempo real"}
                         </h1>
                         <p className="text-gray-600">
-                            Complete todos los campos requeridos
+                            {isEditing ? "Modifique los campos necesarios" : "Complete todos los campos requeridos"}
                         </p>
                     </div>
 
@@ -109,7 +120,7 @@ export const RealTimeForm = () => {
                                         <div className={`w-2 h-2 rounded-full mr-2 ${isLoading ? 'bg-yellow-500 animate-pulse' : 'bg-blue-500'
                                             }`}></div>
                                         <span className="text-sm font-medium text-blue-700">
-                                            {isLoading ? 'Cargando datos...' : 'Formulario activo'}
+                                            {isLoading ? "Procesando datos..." : (isEditing ? "Modo edición" : "Nuevo registro")}
                                         </span>
                                     </div>
                                 </div>
@@ -182,6 +193,21 @@ export const RealTimeForm = () => {
                                         onChange={(e) => handleChange("endTime", e.target.value)}
                                         required
                                         disabled={isLoading}
+                                    />
+                                </div>
+
+                                <div>
+                                    <SelectField
+                                        label="Id del dispositivo conectado a la maquina"
+                                        value={formData.machineId || ""}
+                                        onChange={(e) => handleChange("machineId", e.target.value)}
+                                        options={[
+                                            { value: "", label: "Seleccione un Id" },
+                                            ...machinesOptions
+                                        ]}
+                                        required
+                                        disabled={isLoading || machinesLoading}
+                                        error={formData.machineId === 0 ? "Seleccione un id" : undefined}
                                     />
                                 </div>
 
@@ -260,13 +286,13 @@ export const RealTimeForm = () => {
                                 </Button>
                                 <Button
                                     type="submit"
-                                    variant="success"
+                                    variant={isEditing ? "primary" : "success"}
                                     size="md"
                                     loading={formLoading}
                                     disabled={isLoading || !isFormValid}
                                     className="flex-1"
                                 >
-                                    Guardar
+                                    {isEditing ? "Actualizar registro" : "Guardar registro"}
                                 </Button>
                             </div>
                         </div>
