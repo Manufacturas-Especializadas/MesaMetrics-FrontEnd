@@ -8,6 +8,7 @@ import { useShifts } from "@/hooks/useShifts";
 import { TagMultiSelect } from "../../Inputs/TagMultiSelect";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLines } from "@/hooks/useLines";
+import { useMachineIds } from "@/hooks/useMachineIds";
 
 export const RealTimeForm = () => {
     const { id } = useParams();
@@ -16,6 +17,7 @@ export const RealTimeForm = () => {
     const { shifts, loading: shiftsLoading } = useShifts();
     const { tags, loading: tagsLoading } = useTags();
     const { lines, loading: linesLoading } = useLines();
+    const { machines, loading: machinesLoading } = useMachineIds();
     const navigate = useNavigate();
 
     const {
@@ -41,6 +43,11 @@ export const RealTimeForm = () => {
     const linesOptions = lines.map(line => ({
         value: line.id,
         label: line.linesName
+    }));
+
+    const machinesOptions = machines.map(mach => ({
+        value: mach.id,
+        label: mach.machine
     }));
 
     const handleCancel = () => {
@@ -186,6 +193,21 @@ export const RealTimeForm = () => {
                                         onChange={(e) => handleChange("endTime", e.target.value)}
                                         required
                                         disabled={isLoading}
+                                    />
+                                </div>
+
+                                <div>
+                                    <SelectField
+                                        label="Id del dispositivo conectado a la maquina"
+                                        value={formData.machineId || ""}
+                                        onChange={(e) => handleChange("machineId", e.target.value)}
+                                        options={[
+                                            { value: "", label: "Seleccione un Id" },
+                                            ...machinesOptions
+                                        ]}
+                                        required
+                                        disabled={isLoading || machinesLoading}
+                                        error={formData.machineId === 0 ? "Seleccione un id" : undefined}
                                     />
                                 </div>
 

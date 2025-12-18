@@ -17,6 +17,11 @@ export interface Lines {
     linesName: string;
 };
 
+export interface MachineIds {
+    id: number;
+    machine: string;
+};
+
 export interface GeneralListsResponse<T> {
     success: boolean;
     message: string;
@@ -27,6 +32,7 @@ class GeneralListsService {
     private tagsEndpoint = API_CONFIG.endpoints.generalLists.tagsList;
     private shiftsEndpoit = API_CONFIG.endpoints.generalLists.shiftsList;
     private linesEndpoint = API_CONFIG.endpoints.generalLists.linesList;
+    private machineIdsEndpoint = API_CONFIG.endpoints.generalLists.machineIdsLists;
 
     async getTags(): Promise<GeneralListsResponse<Tags[]>> {
         return apiClient.get<GeneralListsResponse<Tags[]>>(this.tagsEndpoint);
@@ -38,6 +44,10 @@ class GeneralListsService {
 
     async getLines(): Promise<GeneralListsResponse<Lines[]>> {
         return apiClient.get<GeneralListsResponse<Lines[]>>(this.linesEndpoint);
+    };
+
+    async getMachineIds(): Promise<GeneralListsResponse<MachineIds[]>> {
+        return apiClient.get<GeneralListsResponse<MachineIds[]>>(this.machineIdsEndpoint);
     };
 };
 

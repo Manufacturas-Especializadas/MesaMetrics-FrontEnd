@@ -7,6 +7,7 @@ export interface RealTime {
     startTime: string;
     endTime: string;
     lineId: number;
+    machineId: number;
     tagsId: number[];
 };
 

@@ -21,7 +21,8 @@ export const API_CONFIG = {
         generalLists: {
             tagsList: "/api/GeneralList/GetTags",
             shiftsList: "/api/GeneralList/GetShifts",
-            linesList: "/api/GeneralList/GetLines"
+            linesList: "/api/GeneralList/GetLines",
+            machineIdsLists: "/api/GeneralList/GetMachineIds"
         }
     }
 };

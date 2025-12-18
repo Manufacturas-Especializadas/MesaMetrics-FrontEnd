@@ -20,6 +20,7 @@ const initialFormData: RealTime = {
     startTime: "",
     endTime: "",
     lineId: 0,
+    machineId: 0,
     tagsId: []
 };
 
@@ -42,6 +43,7 @@ export const useRealTimeForm = (onSuccess?: () => void, editId?: number): UseRea
                             startTime: response.data.startTime,
                             endTime: response.data.endTime,
                             lineId: response.data.line,
+                            machineId: response.data.machine,
                             tagsId: response.data.tagsId || []
                         });
                     }
