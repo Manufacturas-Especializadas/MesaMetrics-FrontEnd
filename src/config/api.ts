@@ -16,7 +16,8 @@ export const API_CONFIG = {
         telemetry: {
             currentMetrics: (id: number) => `/api/Telemetry/CurrentMetrics/${id}`,
             activeSessions: "/api/Telemetry/GetActiveSessions",
-            dashboardStats: "/api/Telemetry/DashboardStats"
+            dashboardStats: "/api/Telemetry/DashboardStats",
+            getHistory: "/api/Telemetry/History"
         },
         generalLists: {
             tagsList: "/api/GeneralList/GetTags",
