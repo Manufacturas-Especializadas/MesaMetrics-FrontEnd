@@ -32,7 +32,8 @@ const routeTitles: { [key: string]: string } = {
     "/analitica-de-datos": "Analítica de datos",
     "/reportes": "Reportes",
     "/exportar-datos": "Exportar datos",
-    "/nueva-maquina": "Registro de nueva maquina"
+    "/nueva-maquina": "Registro de nueva maquina",
+    "/turnos-historicos": "Turnos históricos"
 };
 
 export const Navbar: React.FC<Props> = ({ toggleSidebar }) => {

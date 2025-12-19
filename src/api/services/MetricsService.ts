@@ -34,6 +34,24 @@ class MetricsService {
     private getCurrentMetricsEndpoint = API_CONFIG.endpoints.telemetry.currentMetrics;
     private getActiveSessionEndpoint = API_CONFIG.endpoints.telemetry.activeSessions;
     private getDashboardStatsEndpoint = API_CONFIG.endpoints.telemetry.dashboardStats;
+    private getHistoryEndpoint = API_CONFIG.endpoints.telemetry.getHistory;
+
+    async getHistoricalMetrcis(date: Date, shift: "morning" | "night"): Promise<MachineMetrics[]> {
+        const params = new URLSearchParams({
+            date: date.toISOString(),
+            shift: shift
+        });
+
+        const url = `${this.getHistoryEndpoint}?${params.toString()}`;
+
+        const response = await apiClient.get<MachineMetrics[]>(url);
+
+        if (!response) {
+            return [];
+        }
+
+        return response;
+    };
 
     async getCurrentMetrics(realTimeId: number): Promise<MachineMetrics> {
         const response = await apiClient.get<MachineMetrics>(this.getCurrentMetricsEndpoint(realTimeId))
