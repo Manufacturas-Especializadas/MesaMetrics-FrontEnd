@@ -6,6 +6,7 @@ import { DataAnalyticsIndex } from "../pages/DataAnalytics/DataAnalyticsIndex";
 import { ReportsIndex } from "../pages/Reports/ReportsIndex";
 import { ExportDataIndex } from "../pages/ExportData/ExportDataIndex";
 import { RealTimeForm } from "../components/Forms/RealTimeForm/RealTimeForm";
+import { HistoricalShifts } from '@/pages/RealTime/HistoricalShifts';
 
 export const MyRoutes = () => {
     return (
@@ -14,6 +15,7 @@ export const MyRoutes = () => {
             <Route path="/tiempo-real" element={<RealTimeIndex />} />
             <Route path="/nueva-maquina" element={<RealTimeForm />} />
             <Route path="/editar-maquina/:id" element={<RealTimeForm />} />
+            <Route path="/turnos-historicos" element={<HistoricalShifts />} />
 
             <Route path="/resumen-general" element={<GeneralSummaryIndex />} />
             <Route path="/paradas" element={<StopsIndex />} />
