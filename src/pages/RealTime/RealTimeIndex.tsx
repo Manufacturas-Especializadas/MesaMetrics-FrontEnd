@@ -20,23 +20,25 @@ export const RealTimeIndex = () => {
     useEffect(() => {
         const connection = new HubConnectionBuilder()
             .withUrl(API_CONFIG.hubUrl)
-            .configureLogging(LogLevel.Warning)
             .withAutomaticReconnect()
+            .configureLogging(LogLevel.Warning)
             .build();
 
+        connection.on("RefreshDashboard", () => {
+            console.log("Evento recibido: RefreshDashboard");
+            refetchSession();
+            refetchStats();
+        });
+
         connection.start()
-            .then(() => {
-                connection.on("RefreshDashboard", () => {
-                    refetchSession();
-                    refetchStats();
-                });
-            })
-            .catch(err => console.error("Error SignalR: ", err));
+            .then(() => console.log("SignalR Conectado exitosamente"))
+            .catch(err => console.error("Error conectando SignalR: ", err));
 
         return () => {
             connection.stop();
         };
-    }, [refetchSession, refetchStats]);
+
+    }, []);
 
     return (
         <div className="flex flex-col gap-6">
@@ -83,7 +85,7 @@ export const RealTimeIndex = () => {
                     </Button>
                 </div>
                 <div className="flex gap-2">
-                    <Button variant="light">
+                    <Button variant="light" onClick={() => navigate("/turnos-historicos")}>
                         Turnos hístoricos
                     </Button>
                     <Button variant="light" onClick={() => navigate("/nueva-maquina")}>
