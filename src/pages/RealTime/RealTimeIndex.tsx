@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/Button/Button";
-import { MachineCard } from "@/components/real-time/MachineCard/MachineCard";
 import { StatusMetricCard } from "@/components/real-time/StatusMetricCard/StatusMetricCard";
 import { useActiveSession } from "@/hooks/useActiveSession";
 import { useDashboardStats } from "@/hooks/useDashboardStats";
 import { useEffect } from "react";
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { API_CONFIG } from "@/config/api";
+import { ConnectedMachineCard } from "@/components/real-time/MachineCard/ConnectedMachineCard";
 
 export const RealTimeIndex = () => {
   const {
@@ -120,7 +120,7 @@ export const RealTimeIndex = () => {
       )}
 
       {!loading &&
-        session.map((id) => <MachineCard key={id} realTimeId={id} />)}
+        session.map((id) => <ConnectedMachineCard key={id} realTimeId={id} />)}
     </div>
   );
 };
