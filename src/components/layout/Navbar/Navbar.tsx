@@ -1,26 +1,9 @@
 import {
-    // Monitor,
-    // HardDrive,
-    // ChevronDown,
     Menu
 } from "lucide-react";
 import type React from "react";
 import { useLocation } from "react-router-dom";
 import Logo from "../../../assets/logomesa.png";
-
-// const HeaderButton: React.FC<{ children: React.ReactNode; icon: React.ElementType }> = ({
-//     children,
-//     icon: Icon,
-// }) => {
-//     return (
-//         <button className="flex items-center gap-2 rounded-lg border border-disabled bg-background px-4 py-2 text-sm 
-//             text-text/90 shadow-sm hover:bg-gray-50">
-//             <Icon size={16} className="text-cancel" />
-//             <span>{children}</span>
-//         </button>
-//     );
-// };
-
 interface Props {
     toggleSidebar: () => void;
 };
