@@ -7,10 +7,17 @@ import { ReportsIndex } from "../pages/Reports/ReportsIndex";
 import { ExportDataIndex } from "../pages/ExportData/ExportDataIndex";
 import { RealTimeForm } from "../components/Forms/RealTimeForm/RealTimeForm";
 import { HistoricalShifts } from '@/pages/RealTime/HistoricalShifts';
+import { Login } from "@/pages/Auth/Login";
+import { Register } from "@/pages/Auth/Register";
 
 export const MyRoutes = () => {
     return (
         <Routes>
+
+            {/* Auth */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
             {/* Real Time */}
             <Route path="/tiempo-real" element={<RealTimeIndex />} />
             <Route path="/nueva-maquina" element={<RealTimeForm />} />
