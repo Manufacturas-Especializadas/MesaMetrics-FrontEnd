@@ -48,37 +48,46 @@ export const RealTimeIndex = () => {
     };
   }, []);
 
+  const safeStats = stats || {
+    total: [],
+    produciendo: [],
+    detenido: [],
+    alerta: [],
+    sinDatos: [],
+    sinTurno: [],
+  };
+
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <StatusMetricCard
-          count={loading ? 0 : stats.total}
+          machines={safeStats.total}
           label="Máquinas totales"
           variant="info"
         />
 
         <StatusMetricCard
-          count={stats.produciendo}
+          machines={safeStats.produciendo}
           label="Produciendo"
           variant="success"
         />
         <StatusMetricCard
-          count={stats.detenido}
+          machines={safeStats.detenido}
           label="Detenido"
           variant="warning"
         />
         <StatusMetricCard
-          count={stats.alerta}
+          machines={safeStats.alerta}
           label="Alerta"
           variant="danger"
         />
         <StatusMetricCard
-          count={stats.sinDatos}
+          machines={safeStats.sinDatos}
           label="Sin Datos"
           variant="gray"
         />
         <StatusMetricCard
-          count={stats.sinTurno}
+          machines={safeStats.sinTurno}
           label="Sin Turno"
           variant="primary"
         />

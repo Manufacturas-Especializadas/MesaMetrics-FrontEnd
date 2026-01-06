@@ -21,12 +21,12 @@ export interface TimelineSegment {
 }
 
 export interface DashboardStats {
-  produciendo: number;
-  detenido: number;
-  alerta: number;
-  sinDatos: number;
-  sinTurno: number;
-  total: string;
+  produciendo: string[];
+  detenido: string[];
+  alerta: string[];
+  sinDatos: string[];
+  sinTurno: string[];
+  total: string[];
 }
 
 class MetricsService {

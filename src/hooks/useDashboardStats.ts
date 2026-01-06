@@ -5,12 +5,12 @@ import {
 import { useCallback, useEffect, useState } from "react";
 
 const INITIAL_STATS: DashboardStats = {
-  produciendo: 0,
-  detenido: 0,
-  alerta: 0,
-  sinDatos: 0,
-  sinTurno: 0,
-  total: 0,
+  produciendo: [],
+  detenido: [],
+  alerta: [],
+  sinDatos: [],
+  sinTurno: [],
+  total: [],
 };
 
 export const useDashboardStats = (autoFetch = true) => {
